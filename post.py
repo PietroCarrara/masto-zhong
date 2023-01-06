@@ -67,7 +67,6 @@ api = getenv("API")
 min_hsk = int(getenv("MINHSK"))
 max_hsk = int(getenv("MAXHSK"))
 
-print(f"{usr}|{pwd}")
 mastodon = Mastodon(api_base_url = api, client_id = cid, client_secret = csc)
 mastodon.log_in(usr, pwd)
 
@@ -77,4 +76,8 @@ cur = conn.cursor()
 word, hsk = fetch_random_word(cur, min_hsk, max_hsk)
 
 character = word.simplified if word.simplified == word.traditional else f"{word.simplified}/{word.traditional}"
-mastodon.status_post(f"{pinyin.decode(word.pinyin)}\n\n{word.english}", spoiler_text = f"HSK{hsk}: {character}", visibility = "direct")
+mastodon.status_post(
+  f"Pinyin: {pinyin.decode(word.pinyin)}\n{word.english}\nhttps://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqb={word.simplified}",
+  spoiler_text = f"HSK{hsk}: {character}",
+  visibility = "direct"
+)
