@@ -30,9 +30,20 @@ hsk_lists = {
   6: "hsk/HSK-6.csv",
 }
 
-# for level in hsk_lists:
-#   with open(hsk_lists[level]) as f:
-#     for w in f.readlines():
+for level in hsk_lists:
+  with open(hsk_lists[level]) as f:
+    for w in f.readlines():
+      w = w.strip()
+
+      # Separate structures
+      for word in w.split('…'):
+        if w == '':
+          continue
+
+        cur.execute(
+          'UPDATE dictionary SET hsk = ? WHERE simplified = ? AND (hsk IS NULL OR hsk > ?)',
+          (level, word, level)
+        )
 
 
 conn.commit()
