@@ -63,6 +63,12 @@ def read():
                 if re.search('^(\w* )?variant of', dictionary[x].english) != None:
                     dictionary.pop(x)
 
+        # Remove entries where the pinyin starts in uppercase 成功
+        def remove_names():
+            for x in range(len(dictionary)-1, -1, -1):
+                if dictionary[x].pinyin[0].isupper():
+                    dictionary.pop(x)
+
         # Triggering the parsing
         for line in dict_lines:
                 parse_line(line)
@@ -70,6 +76,7 @@ def read():
         # Comment out what you want to keep
         remove_surnames()
         remove_variants()
+        remove_names()
 
         return dictionary
 
