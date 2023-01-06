@@ -6,6 +6,8 @@
 
 # Download CC-CEDICT: https://www.mdbg.net/chinese/dictionary?page=cc-cedict
 
+import re
+
 class Dict(list):
     pass
 
@@ -14,7 +16,7 @@ class Word():
     simplified = ""
     pinyin = ""
     english = ""
-
+    classifier = ""
 
 def read():
     #open CEDICT file
@@ -24,6 +26,7 @@ def read():
         lines = text.split('\n')
         dict_lines = list(lines)
 
+
         def parse_line(line):
             if line == '' or line.startswith('#'):
                 dict_lines.remove(line)
@@ -32,7 +35,7 @@ def read():
             line = line.split('/')
             if len(line) <= 1:
                 return 0
-            english = '/'.join(line[1:])
+            english, classifier = parse_meaning(line[1:])
             char_and_pinyin = line[0].split('[')
             characters = char_and_pinyin[0]
             characters = characters.split()
@@ -47,6 +50,7 @@ def read():
             word.simplified = simplified
             word.pinyin = pinyin
             word.english = english
+            word.classifier = classifier
             dictionary.append(word)
 
         def remove_surnames():
@@ -55,14 +59,31 @@ def read():
                     if dictionary[x].traditional == dictionary[x+1].traditional:
                         dictionary.pop(x)
 
-        #make each line into a dictionary
-        print("Parsing dictionary . . .")
+        # Remove entries starting with 'variant of ...', 'erhua variant of ...' and etc.
+        def remove_variants():
+            for x in range(len(dictionary)-1, -1, -1):
+                if re.search('^(\w* )?variant of', dictionary[x].english) != None:
+                    dictionary.pop(x)
+
+        # Triggering the parsing
         for line in dict_lines:
                 parse_line(line)
 
-        #remove entries for surnames from the data (optional):
-
-        print("Removing Surnames . . .")
+        # Comment out what you want to keep
         remove_surnames()
+        remove_variants()
 
         return dictionary
+
+def parse_meaning(texts):
+    meaning = []
+    classifiers = []
+
+    for i in texts:
+        if i.startswith('CL:'):
+            cl = i.lstrip('CL:').split(',')
+            classifiers.extend(cl)
+        else:
+            meaning.append(i)
+
+    return '/'.join(meaning), '/'.join(classifiers) if len(classifiers) > 0 else None

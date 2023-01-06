@@ -11,13 +11,28 @@ cur.execute("""CREATE TABLE dictionary(
   traditional CHAR(32),
   english CHAR(256),
   pinyin CHAR(128),
+  classifier CHAR(64),
   hsk INT
 )""")
 
 dic = cedict.read()
 cur.executemany(
-  "INSERT INTO dictionary (simplified, traditional, english, pinyin, hsk) VALUES (?, ?, ?, ?, ?)",
-  map(lambda w: (w.simplified, w.traditional, w.english, w.pinyin, None), dic)
+  "INSERT INTO dictionary (simplified, traditional, english, pinyin, classifier, hsk) VALUES (?, ?, ?, ?, ?, ?)",
+  map(lambda w: (w.simplified, w.traditional, w.english, w.pinyin, w.classifier, None), dic)
 )
+
+hsk_lists = {
+  1: "hsk/HSK-1.csv",
+  2: "hsk/HSK-2.csv",
+  3: "hsk/HSK-3.csv",
+  4: "hsk/HSK-4.csv",
+  5: "hsk/HSK-5.csv",
+  6: "hsk/HSK-6.csv",
+}
+
+# for level in hsk_lists:
+#   with open(hsk_lists[level]) as f:
+#     for w in f.readlines():
+
 
 conn.commit()
