@@ -1,12 +1,12 @@
 import sqlite3
 import cedict
-import pinyin
 
 conn = sqlite3.connect("dictionary.db")
 cur = conn.cursor()
 
 cur.execute("DROP TABLE IF EXISTS dictionary")
 cur.execute("""CREATE TABLE dictionary(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   simplified CHAR(32),
   traditional CHAR(32),
   english CHAR(256),

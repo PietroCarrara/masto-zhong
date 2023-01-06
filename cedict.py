@@ -1,7 +1,3 @@
-#A parser for the CC-Cedict. Convert the Chinese-English dictionary into a list of python dictionaries with "traditional","simplified", "pinyin", and "english" keys.
-#Make sure that the cedict_ts.u8 file is in the same folder as this file, and that the name matches the file name on line 13.
-#Before starting, open the CEDICT text file and delete the copyright information at the top. Otherwise the program will try to parse it and you will get an error message.
-#Characters that are commonly used as surnames have two entries in CC-CEDICT. This program will remove the surname entry if there is another entry for the character. If you want to include the surnames, simply delete lines 59 and 60.
 #This code was written by Franki Allegra in February 2020.
 
 # Download CC-CEDICT: https://www.mdbg.net/chinese/dictionary?page=cc-cedict
@@ -19,7 +15,9 @@ class Word():
     classifier = ""
 
 def read():
-    #open CEDICT file
+    # TODO: Check if the file is downloaded, and if it's not, download it from
+    # https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip
+
     with open('cedict_ts.u8') as file:
         dictionary = Dict()
         text = file.read()

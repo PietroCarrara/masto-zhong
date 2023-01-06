@@ -1,3 +1,4 @@
 cedict_ts.u8
 __pycache__/
 dictionary.db
+.env
