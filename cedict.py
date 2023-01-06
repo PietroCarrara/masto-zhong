@@ -32,7 +32,7 @@ def read():
             line = line.split('/')
             if len(line) <= 1:
                 return 0
-            english = line[1]
+            english = '/'.join(line[1:])
             char_and_pinyin = line[0].split('[')
             characters = char_and_pinyin[0]
             characters = characters.split()
