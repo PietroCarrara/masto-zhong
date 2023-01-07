@@ -76,6 +76,5 @@ word, hsk = fetch_random_word(cur, min_hsk, max_hsk)
 character = word.simplified if word.simplified == word.traditional else f"{word.simplified}/{word.traditional}"
 mastodon.status_post(
   f"{pinyin.decode(word.pinyin)}\n{word.english}\nhttps://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqb={word.simplified}",
-  spoiler_text = f"HSK{hsk}: {character}",
-  visibility = "direct"
+  spoiler_text = f"HSK{hsk}: {character}"
 )
