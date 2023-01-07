@@ -58,8 +58,7 @@ def fetch(cur, simpl):
 
 load_dotenv()
 
-usr = getenv("USERNAME")
-pwd = getenv("PASSWORD")
+acc = getenv("ACCESS")
 cid = getenv("CLIENTID")
 csc = getenv("CLIENTSECRET")
 api = getenv("API")
@@ -67,8 +66,7 @@ api = getenv("API")
 min_hsk = int(getenv("MINHSK"))
 max_hsk = int(getenv("MAXHSK"))
 
-mastodon = Mastodon(api_base_url = api, client_id = cid, client_secret = csc)
-mastodon.log_in(usr, pwd)
+mastodon = Mastodon(api_base_url = api, access_token = acc)
 
 conn = sqlite3.connect("dictionary.db")
 cur = conn.cursor()
@@ -77,7 +75,7 @@ word, hsk = fetch_random_word(cur, min_hsk, max_hsk)
 
 character = word.simplified if word.simplified == word.traditional else f"{word.simplified}/{word.traditional}"
 mastodon.status_post(
-  f"Pinyin: {pinyin.decode(word.pinyin)}\n{word.english}\nhttps://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqb={word.simplified}",
+  f"{pinyin.decode(word.pinyin)}\n{word.english}\nhttps://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqb={word.simplified}",
   spoiler_text = f"HSK{hsk}: {character}",
   visibility = "direct"
 )
