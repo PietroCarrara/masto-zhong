@@ -1,0 +1,9 @@
+[Unit]
+Description=Run mastozhong every 6 hours
+
+[Timer]
+Unit=mastozhong.service
+OnCalendar=00/6:00
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=Make a mastozhong post
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/Projects/masto-zhong/post.py
+WorkingDirectory=/home/pi/Projects/masto-zhong/
+Environment="API=https://botsin.space/"
+Environment="ACCESS=..."
+Environment="MINHSK=2"
+Environment="MAXHSK=4"
+
+[Install]
+WantedBy=multi-user.target
