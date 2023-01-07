@@ -59,8 +59,6 @@ def fetch(cur, simpl):
 load_dotenv()
 
 acc = getenv("ACCESS")
-cid = getenv("CLIENTID")
-csc = getenv("CLIENTSECRET")
 api = getenv("API")
 
 min_hsk = int(getenv("MINHSK"))
